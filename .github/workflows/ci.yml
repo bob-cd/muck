@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up JDK 27
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "27"
+          cache: maven
+
+      - name: Test and build
+        run: mvn -B clean package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: muck
+          path: target/muck-*.jar
+          if-no-files-found: error
+
+  tag:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Tag release
+        run: |
+          tag="1.0.$(git rev-list --count HEAD)"
+          existing=$(git rev-parse -q --verify "refs/tags/$tag^{commit}" || true)
+          if [ "$existing" = "$GITHUB_SHA" ]; then
+            echo "Tag $tag already points to $GITHUB_SHA, skipping"
+            exit 0
+          fi
+          # A force push to master can reuse a commit count, so move the tag to the new commit
+          git tag -f "$tag" "$GITHUB_SHA"
+          git push -f origin "refs/tags/$tag"
+          echo "Tagged $GITHUB_SHA as $tag"
