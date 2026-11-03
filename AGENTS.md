@@ -2,7 +2,7 @@
 
 ## Project
 
-Muck is a web UI for [Bob CI/CD](https://github.com/bob-cd/bob) built with Java 21, Helidon Nima, FreeMarker, HTMX, and DaisyUI/Tailwind CSS.
+Muck is a web UI for [Bob CI/CD](https://github.com/bob-cd/bob) built with Java 27, Helidon Nima, FreeMarker, HTMX, and DaisyUI/Tailwind CSS.
 
 ## Build & Test
 

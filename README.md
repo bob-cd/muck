@@ -12,7 +12,7 @@ A modern web-based user interface for [Bob CI/CD](https://github.com/bob-cd/bob)
 
 ## Requirements
 
-- **Java 21+** (required for virtual threads)
+- **Java 27+**
 - **Maven 3.8+**
 - **Bob CI/CD server** running (default: http://localhost:7777)
 
@@ -30,7 +30,7 @@ This will start:
 
 ### 2. Build the Application
 
-Use JDK Version 21 or higher
+Use JDK Version 27 or higher
 
 ```bash
 mvn clean package
@@ -118,7 +118,7 @@ Quick summary:
 
 ### Java version issues
 
-Verify Java 21+:
+Verify Java 27+:
 
 ```bash
 java -version
@@ -134,7 +134,7 @@ Muck like Bob is Free and Open Source and always will be. Licensed fully under M
 
 Contributions welcome! Please ensure:
 
-- Code compiles with Java 21
+- Code compiles with Java 27
 - Templates are valid FreeMarker
 - HTMX attributes are properly used
 - OpenAPI spec validation passes

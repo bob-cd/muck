@@ -12,7 +12,8 @@ import io.helidon.config.Config;
 import io.helidon.logging.common.LogConfig;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
-import io.helidon.webserver.staticcontent.StaticContentService;
+import io.helidon.webserver.staticcontent.ClasspathHandlerConfig;
+import io.helidon.webserver.staticcontent.StaticContentFeature;
 import muck.client.BobClient;
 import muck.handlers.ArtifactStoresPageHandler;
 import muck.handlers.CreateArtifactStoreHandler;
@@ -85,8 +86,7 @@ public class Main {
 
     static void routing(HttpRouting.Builder routing) {
         routing
-                .register("/static", StaticContentService.builder("static")
-                        .build())
+                .register("/static", StaticContentFeature.createService(ClasspathHandlerConfig.create("static")))
 
                 // Pipelines
                 .get("/", new HomeHandler(freemarkerConfig, bobClient))
